@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register | Mediverse</title>
+  <style>
+    body {
+      background: #e0f7fa;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .register-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      width: 350px;
+      text-align: center;
+    }
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .btn {
+      width: 95%;
+      padding: 10px;
+      background: #00796b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #004d40;
+    }
+    .back-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .back-link a {
+      color: #00796b;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Branding -->
+<div style="display: flex; align-items: center; justify-content: center; background: #e0f2f1; padding: 20px 30px;">
+  <img src="https://static.vecteezy.com/system/resources/previews/035/773/789/original/hospital-building-medical-icon-png.png" alt="Mediverse Icon" style="height: 80px; margin-right: 25px;">
+  <div>
+    <h1 style="margin: 0; color: #004d40; font-size: 36px;">Mediverse</h1>
+    <p style="margin: 5px 0 0 0; color: #00796b; font-size: 20px; font-weight: 500;">Your health, Our priority</p>
+  </div>
+</div>
+
+<div class="register-container">
+  <h2>Register</h2>
+  <input type="text" id="fullname" placeholder="Full Name" />
+  <input type="text" id="username" placeholder="Username" />
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Password" />
+  <input type="password" id="confirm" placeholder="Confirm Password" />
+  <select id="role">
+    <option value="">Select Role</option>
+    <option value="patient">Patient</option>
+    <option value="doctor">Doctor</option>
+  </select>
+  <button class="btn" onclick="register()">Register</button>
+
+  <div class="back-link">
+    Already have an account? <a href="index.html">Login</a>
+  </div>
+</div>
+
+<script>
+  function register() {
+    const name = document.getElementById("fullname").value.trim();
+    const user = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const pass = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
+    const role = document.getElementById("role").value;
+
+    if (!name || !user || !email || !pass || !confirm || !role) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    if (pass !== confirm) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem("mediverseUsers")) || [];
+    const exists = users.find(u => u.username === user);
+    if (exists) {
+      alert("Username already taken.");
+      return;
+    }
+
+    users.push({ name, username: user, email, password: pass, role });
+    localStorage.setItem("mediverseUsers", JSON.stringify(users));
+
+    alert("Registered successfully! Please login.");
+    window.location.href = "index.html";
+  }
+</script>
+
+</body>
+</html>
+

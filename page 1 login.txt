@@ -1,0 +1,96 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | Mediverse</title>
+  <style>
+    body {
+      background: #e0f7fa;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .login-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      width: 320px;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .btn {
+      width: 95%;
+      padding: 10px;
+      background: #00796b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #004d40;
+    }
+    .register-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .register-link a {
+      color: #00796b;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+
+<div style="display: flex; align-items: center; justify-content: center; background: #e0f2f1; padding: 20px 30px; position: absolute; top: 0; width: 100%;">
+  <img src="https://static.vecteezy.com/system/resources/previews/035/773/789/original/hospital-building-medical-icon-png.png" alt="Mediverse Icon" style="height: 80px; margin-right: 25px;">
+  <div>
+    <h1 style="margin: 0; color: #004d40; font-size: 36px;">Mediverse</h1>
+    <p style="margin: 5px 0 0 0; color: #00796b; font-size: 20px; font-weight: 500;">Your health, Our priority</p>
+  </div>
+</div>
+
+<div class="login-container">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Username" />
+  <input type="password" id="password" placeholder="Password" />
+  <button class="btn" onclick="login()">Login</button>
+
+  <div class="register-link">
+    Not registered? <a href="register.html">Create an account</a>
+  </div>
+</div>
+
+<script>
+  function login() {
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+    const users = JSON.parse(localStorage.getItem("mediverseUsers")) || [];
+    const found = users.find(u => u.username === user && u.password === pass);
+    if (found) {
+      localStorage.setItem("currentUser", JSON.stringify(found));
+      alert("Welcome, " + found.name + "!");
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Invalid credentials. Try again or register.");
+    }
+  }
+</script>
+</body>
+</html>

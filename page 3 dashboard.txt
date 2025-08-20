@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard | Mediverse</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+    }
+    header {
+      background: #00796b;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      padding: 20px;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    h2 {
+      color: #00796b;
+    }
+    .info {
+      margin: 8px 0;
+    }
+    button {
+      background: #00796b;
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #004d40;
+    }
+  </style>
+</head>
+<body>
+
+<div style="display: flex; align-items: center; justify-content: center; background: #e0f2f1; padding: 20px 30px;">
+  <img src="https://static.vecteezy.com/system/resources/previews/035/773/789/original/hospital-building-medical-icon-png.png" alt="Mediverse Icon" style="height: 80px; margin-right: 25px;">
+  <div>
+    <h1 style="margin: 0; color: #004d40; font-size: 36px;">Mediverse</h1>
+    <p style="margin: 5px 0 0 0; color: #00796b; font-size: 20px; font-weight: 500;">Your health, Our priority</p>
+  </div>
+</div>
+
+<!-- Logout -->
+<div style="display: flex; justify-content: flex-end; background: #f0f0f0; padding: 10px 20px;">
+  <button onclick="logout()" style="padding: 8px 15px; background: #b71c1c; color: white; border: none; border-radius: 5px;">Logout</button>
+</div>
+
+<header>
+  <h1 id="welcome">Dashboard</h1>
+</header>
+
+<div class="container" id="dashboardContent"></div>
+
+<script>
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const dashboard = document.getElementById("dashboardContent");
+  const welcome = document.getElementById("welcome");
+
+  if (!user) {
+    alert("You are not logged in.");
+    window.location.href = "index.html";
+  } else {
+    welcome.innerText = user.role === "doctor" ? `Welcome, Dr. ${user.name}` : `Welcome, ${user.name}`;
+
+    if (user.role === "patient") {
+      dashboard.innerHTML = `
+        <div class="card">
+          <h2>Upcoming Appointment</h2>
+          <div class="info">🩺 Doctor: Dr. Nanditha</div>
+          <div class="info">📅 Date: 26 June 2025</div>
+          <div class="info">🕒 Time: 10:30 AM</div>
+          <button>Reschedule</button>
+        </div>
+        <div class="card">
+          <h2>Health Tracker</h2>
+          <div class="info">💓 BP: 120/80</div>
+          <div class="info">🏃 Steps: 4,560 today</div>
+        </div>
+        <div class="card">
+          <h2>Prescription History</h2>
+          <div class="info">📄 22 June - Paracetamol 500mg</div>
+          <div class="info">📄 10 June - Cough Syrup</div>
+        </div>
+        <div class="card">
+          <h2>Emergency Helpline</h2>
+          <div class="info">📞 108 (Ambulance)</div>
+          <div class="info">📞 Mediverse Desk: 9685741223</div>
+        </div>
+        <div class="card">
+          <h2>Willing to Donate</h2>
+          <label><input type="checkbox" value="Blood" /> Blood</label><br/>
+          <label><input type="checkbox" value="Eye" /> Eye</label><br/>
+          <label><input type="checkbox" value="Kidney" /> Kidney</label><br/>
+          <label><input type="checkbox" value="Heart" /> Heart</label><br/>
+          <button onclick="saveDonorPreferences()">Save Preferences</button>
+        </div>
+      `;
+    } else if (user.role === "doctor") {
+      dashboard.innerHTML = `
+        <div class="card">
+          <h2>Today's Appointments</h2>
+          <div class="info">10:30 AM - Usha</div>
+          <div class="info">11:00 AM - Krithika</div>
+          <button>View All</button>
+        </div>
+        <div class="card">
+          <h2>Upload Report</h2>
+          <input type="file" />
+          <button>Upload</button>
+        </div>
+        <div class="card">
+          <h2>Patient History</h2>
+          <input type="text" placeholder="Search by Name" style="width: 100%; padding: 6px; margin-top: 5px;" />
+          <button>Search</button>
+        </div>
+        <div class="card">
+          <h2>Messages</h2>
+          <div class="info">📩 Sady: Need dosage info</div>
+          <div class="info">📩 Saral: Feeling better!</div>
+        </div>
+        <div class="card">
+          <h2>Available Donors</h2>
+          <div class="info">🧍‍♀️ Ranish – Blood, Eye</div>
+          <div class="info">🧍‍♂️ Priya– Kidney</div>
+          <div class="info">🧍‍♀️ Benjamin – Heart</div>
+          <button>Contact Donors</button>
+        </div>
+      `;
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem("currentUser");
+    alert("You have been logged out.");
+    window.location.href = "index.html";
+  }
+
+  function saveDonorPreferences() {
+    const checkboxes = document.querySelectorAll("input[type='checkbox']:checked");
+    const selected = Array.from(checkboxes).map(cb => cb.value);
+    alert("Thank you for your willingness to donate: " + selected.join(", "));
+  }
+</script>
+
+</body>
+</html>
